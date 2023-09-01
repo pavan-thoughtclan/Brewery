@@ -2,6 +2,8 @@ package com.tc.brewery.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 public class Vendor {
 
@@ -10,8 +12,10 @@ public class Vendor {
     private Long id;
     private String name;
     private String address;
-    private String lat;
-    private String lng;
+    @Column(precision = 9, scale = 7) // Adjust precision and scale as needed
+    private BigDecimal lat;
+    @Column(precision = 9, scale = 7) // Adjust precision and scale as needed
+    private BigDecimal lng;
     private String contactNumber;
 
     @Column(columnDefinition = "TEXT")
@@ -20,7 +24,7 @@ public class Vendor {
     public Vendor() {
     }
 
-    public Vendor(Long id, String name, String address, String lat, String lng, String contactNumber, String companyDescription) {
+    public Vendor(Long id, String name, String address, BigDecimal lat, BigDecimal lng, String contactNumber, String companyDescription) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -54,19 +58,19 @@ public class Vendor {
         this.address = address;
     }
 
-    public String getLat() {
+    public BigDecimal getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(BigDecimal lat) {
         this.lat = lat;
     }
 
-    public String getLng() {
+    public BigDecimal getLng() {
         return lng;
     }
 
-    public void setLng(String lng) {
+    public void setLng(BigDecimal lng) {
         this.lng = lng;
     }
 

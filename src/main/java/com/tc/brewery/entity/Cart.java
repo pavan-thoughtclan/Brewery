@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,10 @@ public class Cart {
     private LocalDateTime timestamp;
     private String status;
     private String address;
-    private String lat;
-    private String lng;
+    @Column(precision = 9, scale = 7) // Adjust precision and scale as needed
+    private BigDecimal lat;
+    @Column(precision = 9, scale = 7) // Adjust precision and scale as needed
+    private BigDecimal lng;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("cart")
@@ -54,13 +57,14 @@ public class Cart {
         this.status = status;
     }
 
-    public Cart(Long id, User user, ModeOfPayment modeOfPayment, ModeOfDelivery modeOfDelivery, Double totalAmount, LocalDateTime timestamp, String address, String lat, String lng, List<CartItem> cartItems) {
+    public Cart(Long id, User user, ModeOfPayment modeOfPayment, ModeOfDelivery modeOfDelivery, Double totalAmount, LocalDateTime timestamp, String status, String address, BigDecimal lat, BigDecimal lng, List<CartItem> cartItems) {
         this.id = id;
         this.user = user;
         this.modeOfPayment = modeOfPayment;
         this.modeOfDelivery = modeOfDelivery;
         this.totalAmount = totalAmount;
         this.timestamp = timestamp;
+        this.status = status;
         this.address = address;
         this.lat = lat;
         this.lng = lng;
@@ -83,22 +87,21 @@ public class Cart {
         this.address = address;
     }
 
-    public String getLat() {
+    public BigDecimal getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(BigDecimal lat) {
         this.lat = lat;
     }
 
-    public String getLng() {
+    public BigDecimal getLng() {
         return lng;
     }
 
-    public void setLng(String lng) {
+    public void setLng(BigDecimal lng) {
         this.lng = lng;
     }
-
 
     public LocalDateTime getTimestamp() {
         return timestamp;
@@ -172,8 +175,8 @@ public class Cart {
                 ", timestamp=" + timestamp +
                 ", status='" + status + '\'' +
                 ", address='" + address + '\'' +
-                ", lat='" + lat + '\'' +
-                ", lng='" + lng + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
                 ", cartItems=" + cartItems +
                 '}';
     }

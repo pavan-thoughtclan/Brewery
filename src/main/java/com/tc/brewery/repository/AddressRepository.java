@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +20,7 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
     @Query("SELECT a FROM Address a WHERE a.id = ?1")
     Address findAddressById(Long addressId);
 
-    Address findByUserAndAddressAndLatAndLng(User user, String address, String lat, String lng);
+    Address findByUserAndAddressAndLatAndLng(User user, String address, BigDecimal lat, BigDecimal lng);
 
 }
 

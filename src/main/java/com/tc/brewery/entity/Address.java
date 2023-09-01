@@ -129,6 +129,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 
 
 @Entity
@@ -142,13 +143,15 @@ public class Address {
     @JsonIgnoreProperties("addressList")
     private User user;
     private String address;
-    private String lat;
-    private String lng;
+    @Column(precision = 9, scale = 7) // Adjust precision and scale as needed
+    private BigDecimal lat;
+    @Column(precision = 9, scale = 7) // Adjust precision and scale as needed
+    private BigDecimal lng;
     public Address() {
 
     }
 
-    public Address(Long id, User user, String address, String lat, String lng) {
+    public Address(Long id, User user, String address, BigDecimal lat, BigDecimal lng) {
         this.id = id;
         this.user = user;
         this.address = address;
@@ -181,19 +184,19 @@ public class Address {
         this.address = address;
     }
 
-    public String getLat() {
+    public BigDecimal getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(BigDecimal lat) {
         this.lat = lat;
     }
 
-    public String getLng() {
+    public BigDecimal getLng() {
         return lng;
     }
 
-    public void setLng(String lng) {
+    public void setLng(BigDecimal lng) {
         this.lng = lng;
     }
 
@@ -201,10 +204,10 @@ public class Address {
     public String toString() {
         return "Address{" +
                 "id=" + id +
-//                ", user=" + user +
+                ", user=" + user +
                 ", address='" + address + '\'' +
-                ", lat='" + lat + '\'' +
-                ", lng='" + lng + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
                 '}';
     }
 }
