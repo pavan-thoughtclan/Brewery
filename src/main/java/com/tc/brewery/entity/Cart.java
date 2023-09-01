@@ -13,7 +13,8 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Transient
+    private Long user_id;
     @ManyToOne
     @JsonIgnoreProperties("cartList")
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -28,6 +29,7 @@ public class Cart {
     private Double totalAmount;
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
+    private String status;
     private String address;
     private String lat;
     private String lng;
@@ -40,16 +42,17 @@ public class Cart {
     public Cart() {
     }
 
-//    public Cart(Long id, User user, String modeOfPayment, String modeOfDelivery, Double totalAmount, LocalDateTime timestamp, List<CartItem> cartItems) {
-//        this.id = id;
-//        this.user = user;
-//        this.modeOfPayment = modeOfPayment;
-//        this.modeOfDelivery = modeOfDelivery;
-//        this.totalAmount = totalAmount;
-//        this.timestamp = timestamp;
-//        this.cartItems = cartItems;
-//    }
+    public Long getUser_id() {
+        return user_id;
+    }
 
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
+    }
+
+    public Cart(String status) {
+        this.status = status;
+    }
 
     public Cart(Long id, User user, ModeOfPayment modeOfPayment, ModeOfDelivery modeOfDelivery, Double totalAmount, LocalDateTime timestamp, String address, String lat, String lng, List<CartItem> cartItems) {
         this.id = id;
@@ -62,6 +65,14 @@ public class Cart {
         this.lat = lat;
         this.lng = lng;
         this.cartItems = cartItems;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getAddress() {
@@ -148,21 +159,6 @@ public class Cart {
     public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
     }
-// Other fields, getters, setters...
-
-
-//    @Override
-//    public String toString() {
-//        return "Cart{" +
-//                "id=" + id +
-//                ", user=" + user +
-//                ", modeOfPayment='" + modeOfPayment + '\'' +
-//                ", modeOfDelivery='" + modeOfDelivery + '\'' +
-//                ", totalAmount=" + totalAmount +
-//                ", timestamp=" + timestamp +
-//                ", cartItems=" + cartItems +
-//                '}';
-//    }
 
 
     @Override
@@ -170,10 +166,11 @@ public class Cart {
         return "Cart{" +
                 "id=" + id +
                 ", user=" + user +
-                ", modeOfPayment='" + modeOfPayment + '\'' +
-                ", modeOfDelivery='" + modeOfDelivery + '\'' +
+                ", modeOfPayment=" + modeOfPayment +
+                ", modeOfDelivery=" + modeOfDelivery +
                 ", totalAmount=" + totalAmount +
                 ", timestamp=" + timestamp +
+                ", status='" + status + '\'' +
                 ", address='" + address + '\'' +
                 ", lat='" + lat + '\'' +
                 ", lng='" + lng + '\'' +

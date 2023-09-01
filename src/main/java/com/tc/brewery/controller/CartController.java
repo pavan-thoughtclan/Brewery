@@ -1,5 +1,6 @@
 package com.tc.brewery.controller;
 
+import com.tc.brewery.entity.Beer;
 import com.tc.brewery.entity.Cart;
 import com.tc.brewery.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,6 @@ public class CartController {
     }
 
 
-
     @PostMapping("/add_cart/{userId}")
     public ResponseEntity<String> addCart(@PathVariable Long userId, @RequestBody Map<String, Object> cartDetails) {
         boolean added = cartService.addCart(userId, cartDetails);
@@ -37,15 +37,35 @@ public class CartController {
         }
     }
 
-//    @PostMapping("/add_cart/{userId}")
-//    public ResponseEntity<Void> addCart(@PathVariable Long userId, @RequestBody Map<String, Object> cartDetails) {
-//        boolean added = cartService.addCart(userId, cartDetails);
-//        if (added) {
-//            return ResponseEntity.ok().build(); // Status code 200 without a response body
-//        } else {
-//            return ResponseEntity.badRequest().build(); // Status code 400 without a response body
-//        }
-//    }
+    @GetMapping("/get_current_cart/{userId}")
+    public ResponseEntity<Cart> getCurrentCartByUserId(@PathVariable Long userId) {
+        Cart latestCart = cartService.getLatestCartByUserId(userId);
+        if (latestCart == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(latestCart);
+    }
+
+    @PatchMapping("/update_cart_status/{cartId}")
+    public ResponseEntity<String> updateCartStatus(@PathVariable Long cartId, @RequestBody Map<String, Object> statusMap) {
+        if (statusMap.containsKey("status")) {
+            String newStatus = statusMap.get("status").toString();
+            boolean updated = cartService.updateCartStatus(cartId, newStatus);
+            if (updated) {
+                return ResponseEntity.ok("{\"message\":\"Cart status updated successfully\"}");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else {
+            return ResponseEntity.badRequest().body("{\"message\":\"Invalid request body\"}");
+        }
+    }
+
+    @GetMapping("/list_all_carts")
+    public ResponseEntity<List<Cart>> listAllCarts() {
+        List<Cart> carts = cartService.getAllCartsWithUserId();
+        return ResponseEntity.ok(carts);
+    }
 }
 
 

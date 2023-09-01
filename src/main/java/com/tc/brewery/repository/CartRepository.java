@@ -8,11 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
-//    Cart findByUserId(Long userId);
-//    @Query("SELECT c FROM Cart c JOIN FETCH c.cartItems WHERE c.user.id = :userId")
-//    Cart findCartByUserId(@Param("userId") Long userId);
 
     @Query("SELECT c FROM Cart c JOIN FETCH c.cartItems WHERE c.user.id = :userId")
     List<Cart> findCartsByUserId(@Param("userId") Long userId);
+    Cart findTopByUserIdOrderByTimestampDesc(Long userId);
 
 }

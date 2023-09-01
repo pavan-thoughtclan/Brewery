@@ -40,6 +40,7 @@ public class CartService {
         Double totalAmount = Double.valueOf(cartDetails.get("totalAmount").toString());
         String modeOfPayment = cartDetails.get("modeOfPayment").toString();
         String modeOfDelivery = cartDetails.get("modeOfDelivery").toString();
+        String  status = cartDetails.get("status").toString();
         String address = cartDetails.get("address").toString();
         String lat = cartDetails.get("lat").toString();
         String lng = cartDetails.get("lng").toString();
@@ -67,6 +68,7 @@ public class CartService {
         newCart.setModeOfPayment(paymentMode);
         newCart.setModeOfDelivery(deliveryMode);
         newCart.setTotalAmount(totalAmount);
+        newCart.setStatus(status);
         newCart.setAddress(address);
         newCart.setLat(lat);
         newCart.setLng(lng);
@@ -128,6 +130,30 @@ public class CartService {
         }
         return true;
     }
+    public Cart getLatestCartByUserId(Long userId) {
+        return cartRepository.findTopByUserIdOrderByTimestampDesc(userId);
+    }
+    public boolean updateCartStatus(Long cartId, String newStatus) {
+        Optional<Cart> cartOptional = cartRepository.findById(cartId);
+        if (cartOptional.isPresent()) {
+            Cart cart = cartOptional.get();
+            cart.setStatus(newStatus);
+            cartRepository.save(cart); // Save the updated cart
+            return true;
+        }
+        return false; // Cart with the given ID not found
+    }
+    public List<Cart> getAllCartsWithUserId() {
+        List<Cart> carts = cartRepository.findAll();
+
+        for (Cart cart : carts) {
+            // Populate user_id from the associated User entity
+            cart.setUser_id(cart.getUser().getId());
+        }
+
+        return carts;
+    }
+
 }
 
 
