@@ -1,6 +1,7 @@
 package com.tc.brewery.entity;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Map;
 @Entity
 public class Beer {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String description;
@@ -28,7 +30,8 @@ public class Beer {
     private String food_pairing;
     private String tagline;
     @OneToMany(mappedBy = "beer",cascade= CascadeType.ALL)
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonIgnore
     private List<Rating> ratings = new ArrayList<>();
 
     @OneToMany(mappedBy = "beer",cascade=CascadeType.ALL)
