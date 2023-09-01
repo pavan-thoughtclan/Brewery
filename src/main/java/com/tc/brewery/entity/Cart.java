@@ -2,6 +2,7 @@ package com.tc.brewery.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long user_id;
     @ManyToOne
     @JsonIgnoreProperties("cartList")
