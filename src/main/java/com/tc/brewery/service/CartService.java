@@ -26,10 +26,12 @@ public class CartService {
 
     @Autowired
     private FoodRepository foodRepository;
+//    public List<Cart> getCartsByUserId(Long userId) {
+//        return cartRepository.findCartsByUserId(userId);
+//    }
     public List<Cart> getCartsByUserId(Long userId) {
-        return cartRepository.findCartsByUserId(userId);
+        return cartRepository.findCartsByUserIdOrderByTimestampDesc(userId);
     }
-
     @Transactional
     public Long addCart(Long userId, Map<String, Object> cartDetails) {
         User user = userRepository.findById(userId).orElse(null);
