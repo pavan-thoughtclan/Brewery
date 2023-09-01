@@ -5,6 +5,7 @@ import com.tc.brewery.entity.Food;
 import com.tc.brewery.service.BeerService;
 import com.tc.brewery.service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +53,15 @@ public class FoodController {
             return ResponseEntity.notFound().build(); // Return 404 status code
         }
         return ResponseEntity.ok(food);
+    }
+    @PostMapping("/create_food")
+    public ResponseEntity<Object> addFood(@RequestBody Food food) {
+        try {
+            Food savedFood = foodService.saveFood(food);
+            return ResponseEntity.ok(savedFood);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }

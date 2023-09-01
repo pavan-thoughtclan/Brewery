@@ -1,6 +1,7 @@
 package com.tc.brewery.entity;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -14,6 +15,7 @@ import java.util.Map;
 @Entity
 public class Food {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String food_name;
     private String category;
@@ -27,6 +29,7 @@ public class Food {
 
     @OneToMany(mappedBy = "food",cascade= CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<Rating> ratings = new ArrayList<>();
     @Column(precision = 3, scale = 1) // Adjust precision and scale as needed
     private BigDecimal averageRating; // Store average rating as a BigDecimal
@@ -41,17 +44,6 @@ public class Food {
 
     public Food() {
     }
-
-//    public Food(int id, String food_name, String category, String image_url, BigDecimal food_price, String description, String calories, List<CartItem> cartItems) {
-//        this.id = id;
-//        this.food_name = food_name;
-//        this.category = category;
-//        this.image_url = image_url;
-//        this.food_price = food_price;
-//        this.description = description;
-//        this.calories = calories;
-////        this.cartItems = cartItems;
-//    }
 
     public Food(int id, String food_name, String category, String image_url, BigDecimal food_price, String description, String calories, BigDecimal averageRating) {
         this.id = id;

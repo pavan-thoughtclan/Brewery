@@ -48,7 +48,11 @@ public class SecurityConfig {
                                 "/list_all_carts",
                                 "/update_cart_status/{cartId}",
                                 "/get_current_cart/{userId}",
+<<<<<<< HEAD
                                 "/add_beers"
+=======
+                                "/create_food"
+>>>>>>> 7f9884691bf15a363b794ff0e58eee8715dc256b
                         ).authenticated()
                         .requestMatchers(
                                 "/auth/login/passcode-login",

@@ -3,6 +3,7 @@ package com.tc.brewery.service;
 import com.tc.brewery.entity.Beer;
 import com.tc.brewery.entity.Food;
 import com.tc.brewery.repository.FoodRepository;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,13 @@ public class FoodService {
 
     public Food getFoodById(int foodId) {
         return foodRepository.findById(foodId).orElse(null);
+    }
+    public Food saveFood(Food food) {
+        String foodName = food.getFood_name();
+        if (!StringUtils.isEmpty(foodName) && foodRepository.existsByFoodName(foodName)) {
+            throw new RuntimeException("Food with the same name already exists");
+        }
+
+        return foodRepository.save(food);
     }
 }
