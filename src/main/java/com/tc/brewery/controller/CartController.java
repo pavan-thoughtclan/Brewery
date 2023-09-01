@@ -29,9 +29,9 @@ public class CartController {
 
     @PostMapping("/add_cart/{userId}")
     public ResponseEntity<String> addCart(@PathVariable Long userId, @RequestBody Map<String, Object> cartDetails) {
-        boolean added = cartService.addCart(userId, cartDetails);
-        if (added) {
-            return ResponseEntity.ok("{\"message\":\"Cart added successfully\"}");
+        Long cartId = cartService.addCart(userId, cartDetails); // Get the cart ID
+        if (cartId != null && cartId != -1) {
+            return ResponseEntity.ok("{\"message\":\"Cart added successfully\",\"cartId\":" + cartId + "}");
         } else {
             return ResponseEntity.badRequest().body("{\"message\":\"Failed to add cart\"}");
         }

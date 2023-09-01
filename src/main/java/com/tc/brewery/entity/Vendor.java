@@ -8,23 +8,26 @@ public class Vendor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-    private String location;
+    private String address;
+    private String lat;
+    private String lng;
     private String contactNumber;
 
     @Column(columnDefinition = "TEXT")
-    private String description;
+    private String companyDescription;
 
     public Vendor() {
     }
 
-    public Vendor(Long id, String name, String location, String contactNumber, String description) {
+    public Vendor(Long id, String name, String address, String lat, String lng, String contactNumber, String companyDescription) {
         this.id = id;
         this.name = name;
-        this.location = location;
+        this.address = address;
+        this.lat = lat;
+        this.lng = lng;
         this.contactNumber = contactNumber;
-        this.description = description;
+        this.companyDescription = companyDescription;
     }
 
     public Long getId() {
@@ -43,12 +46,28 @@ public class Vendor {
         this.name = name;
     }
 
-    public String getLocation() {
-        return location;
+    public String getAddress() {
+        return address;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
     public String getContactNumber() {
@@ -59,13 +78,12 @@ public class Vendor {
         this.contactNumber = contactNumber;
     }
 
-    public String getDescription() {
-        return description;
+    public String getCompanyDescription() {
+        return companyDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCompanyDescription(String companyDescription) {
+        this.companyDescription = companyDescription;
     }
-// Constructors, getters, setters
 }
 
