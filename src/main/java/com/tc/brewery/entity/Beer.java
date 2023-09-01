@@ -27,9 +27,6 @@ public class Beer {
     private String ingredient_name;
     private String food_pairing;
     private String tagline;
-    @Column(precision = 3, scale = 1)
-    private BigDecimal manual_ratings;
-
     @OneToMany(mappedBy = "beer",cascade= CascadeType.ALL)
     @JsonManagedReference
     private List<Rating> ratings = new ArrayList<>();
@@ -68,7 +65,6 @@ public class Beer {
         this.ingredient_name = ingredient_name;
         this.food_pairing = food_pairing;
         this.tagline = tagline;
-        this.manual_ratings = manual_ratings;
         this.averageRating = averageRating;
     }
 
@@ -123,14 +119,6 @@ public class Beer {
 
     public String getFood_pairing() {
         return food_pairing;
-    }
-
-    public BigDecimal getManual_ratings() {
-        return manual_ratings;
-    }
-
-    public void setManual_ratings(BigDecimal manual_ratings) {
-        this.manual_ratings = manual_ratings;
     }
 
     public void setFood_pairing(String food_pairing) {
@@ -201,20 +189,6 @@ public class Beer {
         this.brewers_tips = brewers_tips;
     }
 
-//    @JsonGetter("ratings") // Custom serialization for ratings
-//    public List<Map<String, Object>> getRatingsInfo() {
-//        List<Map<String, Object>> ratingsInfo = new ArrayList<>();
-//        for (Rating rating : ratings) {
-//            Map<String, Object> info = new HashMap<>();
-//            info.put("id", rating.getId());
-//            info.put("rating", rating.getRating());
-//            info.put("review", rating.getReview());
-//            info.put("user", getUserInfo(rating.getUser())); // Extract user info
-//            ratingsInfo.add(info);
-//        }
-//        return ratingsInfo;
-//    }
-
     private Map<String, Object> getUserInfo(User user) {
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("id", user.getId());
@@ -238,7 +212,6 @@ public class Beer {
                 ", ingredient_name='" + ingredient_name + '\'' +
                 ", food_pairing='" + food_pairing + '\'' +
                 ", tagline='" + tagline + '\'' +
-                ", manual_ratings=" + manual_ratings +
                 ", ratings=" + ratings +
                 ", pricings=" + pricings +
                 ", averageRating=" + averageRating +
