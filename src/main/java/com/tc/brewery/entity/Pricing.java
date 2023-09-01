@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 @Entity
 public class Pricing {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
     @JoinColumn(name = "beer_id", referencedColumnName = "id") // Match the column names

@@ -22,5 +22,8 @@ public interface BeerRepository extends JpaRepository<Beer, Integer> {
 
     List<Beer> findByAverageRatingBetween(BigDecimal lowerLimit, BigDecimal upperLimit);
 
+
+    Beer findByName(String name);
+
 }
 
