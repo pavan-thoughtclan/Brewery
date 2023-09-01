@@ -1,6 +1,7 @@
 package com.tc.brewery.entity;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Map;
 @Entity
 public class Beer {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String description;
@@ -27,11 +29,10 @@ public class Beer {
     private String ingredient_name;
     private String food_pairing;
     private String tagline;
-    @Column(precision = 3, scale = 1)
-    private BigDecimal manual_ratings;
 
     @OneToMany(mappedBy = "beer",cascade= CascadeType.ALL)
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonIgnore
     private List<Rating> ratings = new ArrayList<>();
 
     @OneToMany(mappedBy = "beer",cascade=CascadeType.ALL)
@@ -56,7 +57,7 @@ public class Beer {
     public Beer() {
     }
 
-    public Beer(int id, String name, String description, String image_url, int abv, int ibu, String category, String brewers_tips, String ingredient_name, String food_pairing, String tagline, BigDecimal manual_ratings, BigDecimal averageRating) {
+    public Beer(int id, String name, String description, String image_url, int abv, int ibu, String category, String brewers_tips, String ingredient_name, String food_pairing, String tagline, BigDecimal averageRating) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -68,7 +69,6 @@ public class Beer {
         this.ingredient_name = ingredient_name;
         this.food_pairing = food_pairing;
         this.tagline = tagline;
-        this.manual_ratings = manual_ratings;
         this.averageRating = averageRating;
     }
 
@@ -123,14 +123,6 @@ public class Beer {
 
     public String getFood_pairing() {
         return food_pairing;
-    }
-
-    public BigDecimal getManual_ratings() {
-        return manual_ratings;
-    }
-
-    public void setManual_ratings(BigDecimal manual_ratings) {
-        this.manual_ratings = manual_ratings;
     }
 
     public void setFood_pairing(String food_pairing) {
@@ -237,8 +229,6 @@ public class Beer {
                 ", brewers_tips='" + brewers_tips + '\'' +
                 ", ingredient_name='" + ingredient_name + '\'' +
                 ", food_pairing='" + food_pairing + '\'' +
-                ", tagline='" + tagline + '\'' +
-                ", manual_ratings=" + manual_ratings +
                 ", ratings=" + ratings +
                 ", pricings=" + pricings +
                 ", averageRating=" + averageRating +

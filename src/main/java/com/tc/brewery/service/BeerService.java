@@ -1,9 +1,11 @@
 package com.tc.brewery.service;
 
 import com.tc.brewery.entity.Beer;
+import com.tc.brewery.entity.Pricing;
 import com.tc.brewery.entity.Rating;
 import com.tc.brewery.entity.User;
 import com.tc.brewery.repository.BeerRepository;
+import com.tc.brewery.repository.PricingRepository;
 import com.tc.brewery.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,9 @@ public class BeerService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PricingRepository pricingRepository;
 
     public Set<String> getAllCategories() {
         List<Beer> beers = beerRepository.findAll();
@@ -52,5 +57,27 @@ public class BeerService {
     }
 
 
+    public Beer addBeer(Beer beer) {
+        // Add any additional validation or logic here
 
+        // Save the Beer entity to get its ID
+        Beer savedBeer = beerRepository.save(beer);
+
+        // Iterate through the pricings list and set the beer_id for each pricing entry
+        for (Pricing pricing : beer.getPricings()) {
+            pricing.setBeer(savedBeer);
+            // Set other pricing properties as needed
+            // Save the Pricing entity
+            pricingRepository.save(pricing);
+        }
+
+        return savedBeer;
+    }
+
+
+
+    public boolean isBeerNameUnique(String name) {
+        // Check if a beer with the given name already exists
+        return beerRepository.findByName(name) == null;
+    }
 }

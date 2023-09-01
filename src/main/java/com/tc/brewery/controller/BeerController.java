@@ -2,6 +2,7 @@ package com.tc.brewery.controller;
 import com.tc.brewery.entity.Beer;
 import com.tc.brewery.service.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +51,18 @@ public class BeerController {
         }
 
         return ResponseEntity.ok(beer);
+    }
+
+
+    @PostMapping("/add_beers")
+    public ResponseEntity<?> addBeer(@RequestBody Beer beer) {
+        // Check if the beer name is unique
+        if (!beerService.isBeerNameUnique(beer.getName())) {
+            return ResponseEntity.badRequest().body("Beer with the same name already exists.");
+        }
+
+        Beer addedBeer = beerService.addBeer(beer);
+        return new ResponseEntity<>(addedBeer, HttpStatus.CREATED);
     }
 }
 
