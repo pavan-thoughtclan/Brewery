@@ -204,7 +204,7 @@ public class Address {
     public String toString() {
         return "Address{" +
                 "id=" + id +
-                ", user=" + user +
+//                ", user=" + user +
                 ", address='" + address + '\'' +
                 ", lat=" + lat +
                 ", lng=" + lng +

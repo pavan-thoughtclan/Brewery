@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Map;
+
 @Controller
 public class NoAuthController {
 
@@ -135,7 +137,9 @@ public class NoAuthController {
     }
 
     @PostMapping("/auth/login/otp-login1")
-    public ResponseEntity<String> loginviaotpstep1(@RequestParam String username, HttpSession session, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<String> loginviaotpstep1(@RequestBody Map<String, String> requestBody, HttpSession session, RedirectAttributes redirectAttributes) {
+        // Extract the 'username' from the request body
+        String username = requestBody.get("username");
         // Call your service method to perform OTP sending and validation
         boolean isPhoneNumberValid = loginService.loginviaotpstep1(username, session, redirectAttributes);
         if (isPhoneNumberValid) {
@@ -146,7 +150,8 @@ public class NoAuthController {
     }
 
     @PostMapping("/auth/login/otp-login2")
-    public ResponseEntity<JwtResponse> loginviaotpstep2(@RequestParam String leotp, HttpServletRequest request) {
+    public ResponseEntity<JwtResponse> loginviaotpstep2(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
+        String leotp = requestBody.get("leotp");
         boolean isOtpValid = loginService.loginviaotpstep2(leotp, request);
 
         if (isOtpValid) {
@@ -199,9 +204,10 @@ public class NoAuthController {
 
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> sendOtp(@RequestParam String phoneNumber, HttpSession session, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<String> sendOtp(@RequestBody Map<String, String> requestBody, HttpSession session, RedirectAttributes redirectAttributes) {
+        String username = requestBody.get("username");
         // Call your service method to perform OTP sending and validation
-        boolean isPhoneNumberValid = loginService.sendOtp(phoneNumber, session,redirectAttributes);
+        boolean isPhoneNumberValid = loginService.sendOtp(username, session,redirectAttributes);
 
         if (isPhoneNumberValid) {
             return ResponseEntity.ok("{\"message\":\"OTP sent successfully\"}"); // Return 200 OK status
@@ -212,9 +218,10 @@ public class NoAuthController {
 
 
     @PostMapping("/verify-otp")
-    public ResponseEntity<String> verifyOtpAndShowPasswordFields(@RequestParam String eotp,
+    public ResponseEntity<String> verifyOtpAndShowPasswordFields(@RequestBody Map<String, String> requestBody,
                                                                  HttpServletRequest request
     ) {
+        String eotp = requestBody.get("eotp");
         boolean isOtpValid = loginService.verifyOtpAndShowPasswordFields(eotp, request);
         if (isOtpValid) {
             return ResponseEntity.ok("{\"message\":\"OTP verified successfully\"}"); // Return 200 OK status
@@ -225,10 +232,11 @@ public class NoAuthController {
 
     @PostMapping("/set-new-password")
     public ResponseEntity<String> setNewPassword(
-            @RequestParam String newPassword,
-            @RequestParam String confirmNewPassword,
+            @RequestBody Map<String, String> requestBody,
             HttpServletRequest request
     ) {
+        String newPassword = requestBody.get("newPassword");
+        String confirmNewPassword = requestBody.get("confirmNewPassword");
         boolean passwordUpdated = loginService.setNewPassword(newPassword, confirmNewPassword, request);
 
         if (passwordUpdated) {
