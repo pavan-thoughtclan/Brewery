@@ -40,8 +40,6 @@ public class User {
     private List<Address> addressList=new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    @JsonIgnore
-//    @JsonIgnoreProperties("user")...if cartlist is displayed use this first
     private List<Cart> cartList = new ArrayList<>();
 
     @JsonIgnore

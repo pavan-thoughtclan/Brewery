@@ -10,11 +10,9 @@ public class Pricing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
-    @JoinColumn(name = "beer_id", referencedColumnName = "id") // Match the column names
-    private Beer beer; // Add this field
+    @JoinColumn(name = "beer_id", referencedColumnName = "id")
+    private Beer beer;
 
-    //    @Column(name = "beer_id") // Map to the snake_case column name
-//    private Long beer_id;
     private int size_ml;
     private BigDecimal price;
     private String image_url;

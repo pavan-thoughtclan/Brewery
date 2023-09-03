@@ -23,20 +23,12 @@ public class Rating {
     private User user;
 
     @Column(precision = 3, scale = 1)
-    private BigDecimal rating; // Rating out of 5
+    private BigDecimal rating;
     private String review;
 
     public Rating() {
     }
 
-
-//    public Rating(Long id, Beer beer, User user, BigDecimal rating, String review) {
-//        this.id = id;
-//        this.beer = beer;
-//        this.user = user;
-//        this.rating = rating;
-//        this.review = review;
-//    }
 
     public Rating(Long id, Beer beer, Food food, User user, BigDecimal rating, String review) {
         this.id = id;
@@ -79,14 +71,6 @@ public class Rating {
         this.user = user;
     }
 
-//    public int getRating() {
-//        return rating;
-//    }
-//
-//    public void setRating(int rating) {
-//        this.rating = rating;
-//    }
-
     public BigDecimal getRating() {
         return rating;
     }
@@ -102,5 +86,4 @@ public class Rating {
     public void setReview(String review) {
         this.review = review;
     }
-    // Getters and setters
 }

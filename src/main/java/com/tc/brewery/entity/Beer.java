@@ -30,7 +30,6 @@ public class Beer {
     private String food_pairing;
     private String tagline;
     @OneToMany(mappedBy = "beer",cascade= CascadeType.ALL)
-//    @JsonManagedReference
     @JsonIgnore
     private List<Rating> ratings = new ArrayList<>();
 
@@ -42,8 +41,8 @@ public class Beer {
     @JsonIgnoreProperties("beer")
     private List<CartItem> cartItems = new ArrayList<>();
 
-    @Column(precision = 3, scale = 1) // Adjust precision and scale as needed
-    private BigDecimal averageRating; // Store average rating as a BigDecimal
+    @Column(precision = 3, scale = 1)
+    private BigDecimal averageRating;
 
     public BigDecimal getAverageRating() {
         return averageRating;
@@ -72,7 +71,7 @@ public class Beer {
     }
 
 
-    @JsonGetter("ratings") // Custom serialization for ratings
+    @JsonGetter("ratings")
     public List<Map<String, Object>> getRatingsInfo() {
 
         List<Map<String, Object>> ratingsInfo = new ArrayList<>();
@@ -81,7 +80,7 @@ public class Beer {
             info.put("id", rating.getId());
             info.put("rating", rating.getRating());
             info.put("review", rating.getReview());
-            info.put("user", getUserInfo(rating.getUser())); // Extract user info
+            info.put("user", getUserInfo(rating.getUser()));
             ratingsInfo.add(info);
         }
         return ratingsInfo;

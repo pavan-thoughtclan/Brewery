@@ -122,8 +122,9 @@ public class CartService {
 
         // Save the updated user with the new Cart
         userRepository.save(user);
-        Address existingAddress = addressRepository.findByUserAndAddressAndLatAndLng(user, address, lat, lng);
+        Address existingAddress = addressRepository.findByUserAndAddress(user, address);
         if (existingAddress == null) {
+            // Address with the same address column does not exist, so save the new address
             Address newAddress = new Address();
             newAddress.setUser(user);
             newAddress.setAddress(address);
