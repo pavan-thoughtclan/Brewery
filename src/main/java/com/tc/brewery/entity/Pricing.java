@@ -18,14 +18,26 @@ public class Pricing {
     private int size_ml;
     private BigDecimal price;
 
+    private String image_url;
+
     public Pricing() {
     }
 
-    public Pricing(int id, Beer beer, int size_ml, BigDecimal price) {
+
+    public Pricing(int id, Beer beer, int size_ml, BigDecimal price, String image_url) {
         this.id = id;
         this.beer = beer;
         this.size_ml = size_ml;
         this.price = price;
+        this.image_url = image_url;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     public Beer getBeer() {
