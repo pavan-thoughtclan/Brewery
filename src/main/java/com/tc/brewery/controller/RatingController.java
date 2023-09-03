@@ -22,12 +22,9 @@ public class RatingController {
             @PathVariable int userId,
             @RequestBody Map<String, Object> ratingData) {
 
+        String ratingValueStr = ratingData.get("ratingValue").toString();
+        BigDecimal ratingValue = new BigDecimal(ratingValueStr);
 
-        String ratingValueStr = ratingData.get("ratingValue").toString(); // Get rating as String
-        BigDecimal ratingValue = new BigDecimal(ratingValueStr); // Convert to BigDecimal
-
-
-//        BigDecimal ratingValue = (BigDecimal) ratingData.get("ratingValue");
         String review = (String) ratingData.get("review");
 
         return ratingService.addBeerRating(beerId, userId, ratingValue, review);
@@ -39,12 +36,9 @@ public class RatingController {
             @PathVariable int userId,
             @RequestBody Map<String, Object> ratingData) {
 
+        String ratingValueStr = ratingData.get("ratingValue").toString();
+        BigDecimal ratingValue = new BigDecimal(ratingValueStr);
 
-        String ratingValueStr = ratingData.get("ratingValue").toString(); // Get rating as String
-        BigDecimal ratingValue = new BigDecimal(ratingValueStr); // Convert to BigDecimal
-
-
-//        BigDecimal ratingValue = (BigDecimal) ratingData.get("ratingValue");
         String review = (String) ratingData.get("review");
 
         return ratingService.addFoodRating(foodId, userId, ratingValue, review);

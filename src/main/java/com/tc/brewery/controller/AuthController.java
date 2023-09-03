@@ -20,7 +20,7 @@ import java.security.Principal;
 @RestController
 public class AuthController {
 
-    private final LoginService loginService; // Match the field name
+    private final LoginService loginService;
 
     @Autowired
     public AuthController(LoginService loginService) {

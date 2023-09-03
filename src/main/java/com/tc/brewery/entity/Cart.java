@@ -34,14 +34,13 @@ public class Cart {
     private LocalDateTime timestamp;
     private String status;
     private String address;
-    @Column(precision = 9, scale = 7) // Adjust precision and scale as needed
+    @Column(precision = 9, scale = 7)
     private BigDecimal lat;
-    @Column(precision = 9, scale = 7) // Adjust precision and scale as needed
+    @Column(precision = 9, scale = 7)
     private BigDecimal lng;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("cart")
-//    @JsonIgnore
     private List<CartItem> cartItems = new ArrayList<>();
 
     public Cart() {

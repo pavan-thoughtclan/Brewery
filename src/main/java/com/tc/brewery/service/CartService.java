@@ -26,9 +26,7 @@ public class CartService {
 
     @Autowired
     private FoodRepository foodRepository;
-//    public List<Cart> getCartsByUserId(Long userId) {
-//        return cartRepository.findCartsByUserId(userId);
-//    }
+
     public List<Cart> getCartsByUserId(Long userId) {
         return cartRepository.findCartsByUserIdOrderByTimestampDesc(userId);
     }
@@ -36,10 +34,9 @@ public class CartService {
     public Long addCart(Long userId, Map<String, Object> cartDetails) {
         User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
-            return null; // User not found
+            return null;
         }
 
-        // Extract cart properties from cartDetails
         Double totalAmount = Double.valueOf(cartDetails.get("totalAmount").toString());
         String modeOfPayment = cartDetails.get("modeOfPayment").toString();
         String modeOfDelivery = cartDetails.get("modeOfDelivery").toString();
@@ -49,23 +46,20 @@ public class CartService {
         BigDecimal lng = new BigDecimal(cartDetails.get("lng").toString());
         List<Map<String, Object>> cartItemsList = (List<Map<String, Object>>) cartDetails.get("cartItems");
 
-        // Validate and set ModeOfPayment
         ModeOfPayment paymentMode;
         try {
             paymentMode = ModeOfPayment.valueOf(modeOfPayment);
         } catch (IllegalArgumentException e) {
-            return null; // Invalid payment mode
+            return null;
         }
 
-        // Validate and set ModeOfDelivery
         ModeOfDelivery deliveryMode;
         try {
             deliveryMode = ModeOfDelivery.valueOf(modeOfDelivery);
         } catch (IllegalArgumentException e) {
-            return null; // Invalid delivery mode
+            return null;
         }
 
-        // Create a new Cart
         Cart newCart = new Cart();
         newCart.setUser(user);
         newCart.setModeOfPayment(paymentMode);
@@ -75,39 +69,33 @@ public class CartService {
         newCart.setAddress(address);
         newCart.setLat(lat);
         newCart.setLng(lng);
-        newCart.setTimestamp(LocalDateTime.now()); // Set the timestamp
+        newCart.setTimestamp(LocalDateTime.now());
 
-        // Create and add CartItems to the new Cart
         List<CartItem> cartItems = new ArrayList<>();
         for (Map<String, Object> itemMap : cartItemsList) {
             CartItem cartItem = new CartItem();
-            cartItem.setCart(newCart); // Set the relationship
+            cartItem.setCart(newCart);
             if (itemMap.containsKey("beerId")) {
 
-                // Set the beer_id
                 Integer beerId = ((Number) itemMap.get("beerId")).intValue();
                 Beer beer = beerRepository.findById(beerId).orElse(null);
                 if (beer == null) {
-                    return null; // Beer not found
+                    return null;
                 }
                 cartItem.setBeer(beer);
-
-                // Set other attributes
                 cartItem.setBeerQuantity(Integer.valueOf(itemMap.get("beerQuantity").toString()));
                 cartItem.setBeerVolumeInMl(Double.valueOf(itemMap.get("beerVolumeInMl").toString()));
                 cartItem.setBeerAmount(Double.valueOf(itemMap.get("beerAmount").toString()));
                 cartItem.setAmountOfEachBeer(Double.valueOf(itemMap.get("amountOfEachBeer").toString()));
 
-            } else if (itemMap.containsKey("foodId")) {
-                // Set the beer_id
+            }
+            else if (itemMap.containsKey("foodId")) {
                 Integer foodId = ((Number) itemMap.get("foodId")).intValue();
                 Food food = foodRepository.findById(foodId).orElse(null);
                 if (food == null) {
-                    return null; // Beer not found
+                    return null;
                 }
                 cartItem.setFood(food);
-
-                // Set other attributes
                 cartItem.setFoodQuantity(Integer.valueOf(itemMap.get("foodQuantity").toString()));
                 cartItem.setFoodAmount(Double.valueOf(itemMap.get("foodAmount").toString()));
                 cartItem.setAmountOfEachFood(Double.valueOf(itemMap.get("amountOfEachFood").toString()));
@@ -116,15 +104,10 @@ public class CartService {
             cartItems.add(cartItem);
         }
         newCart.setCartItems(cartItems);
-
-        // Add the new Cart to the user's cart list
         user.getCartList().add(newCart);
-
-        // Save the updated user with the new Cart
         userRepository.save(user);
         Address existingAddress = addressRepository.findByUserAndAddress(user, address);
         if (existingAddress == null) {
-            // Address with the same address column does not exist, so save the new address
             Address newAddress = new Address();
             newAddress.setUser(user);
             newAddress.setAddress(address);
@@ -140,7 +123,7 @@ public class CartService {
             }
         }
 
-        return cartId; // Return the cart ID or null
+        return cartId;
     }
     public Cart getLatestCartByUserId(Long userId) {
         return cartRepository.findTopByUserIdOrderByTimestampDesc(userId);
@@ -150,16 +133,15 @@ public class CartService {
         if (cartOptional.isPresent()) {
             Cart cart = cartOptional.get();
             cart.setStatus(newStatus);
-            cartRepository.save(cart); // Save the updated cart
+            cartRepository.save(cart);
             return true;
         }
-        return false; // Cart with the given ID not found
+        return false;
     }
     public List<Cart> getAllCartsWithUserId() {
         List<Cart> carts = cartRepository.findAll();
 
         for (Cart cart : carts) {
-            // Populate user_id from the associated User entity
             cart.setUser_id(cart.getUser().getId());
         }
 

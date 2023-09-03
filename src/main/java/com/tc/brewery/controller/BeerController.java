@@ -36,9 +36,9 @@ public class BeerController {
         Beer beer = beerService.getBeerByCategoryAndId(category, beerId);
 
         if (beer == null) {
-            return ResponseEntity.notFound().build(); // Return 404 Not Found
+            return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(beer); // Return the beer if found
+            return ResponseEntity.ok(beer);
         }
     }
 
@@ -47,7 +47,7 @@ public class BeerController {
         Beer beer = beerService.getBeerById(beerId);
 
         if (beer == null) {
-            return ResponseEntity.notFound().build(); // Return 404 status code
+            return ResponseEntity.notFound().build();
         }
 
         return ResponseEntity.ok(beer);
@@ -56,7 +56,6 @@ public class BeerController {
 
     @PostMapping("/add_beers")
     public ResponseEntity<?> addBeer(@RequestBody Beer beer) {
-        // Check if the beer name is unique
         if (!beerService.isBeerNameUnique(beer.getName())) {
             return ResponseEntity.badRequest().body("Beer with the same name already exists.");
         }

@@ -28,7 +28,7 @@ public class AddressService {
         Address existingAddress = addressRepository.findByUserAndAddressAndLatAndLng(
                 user, newAddress.getAddress(), newAddress.getLat(), newAddress.getLng());
 
-        if (existingAddress != null) {
+        if (existingAddress != null) { //if an existing address is found
             return ResponseEntity.badRequest().build();
         }
 

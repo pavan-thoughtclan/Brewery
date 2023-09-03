@@ -56,28 +56,16 @@ public class BeerService {
         return beerRepository.findById(beerId).orElse(null);
     }
 
-
     public Beer addBeer(Beer beer) {
-        // Add any additional validation or logic here
-
-        // Save the Beer entity to get its ID
         Beer savedBeer = beerRepository.save(beer);
-
-        // Iterate through the pricings list and set the beer_id for each pricing entry
         for (Pricing pricing : beer.getPricings()) {
             pricing.setBeer(savedBeer);
-            // Set other pricing properties as needed
-            // Save the Pricing entity
             pricingRepository.save(pricing);
         }
-
         return savedBeer;
     }
 
-
-
     public boolean isBeerNameUnique(String name) {
-        // Check if a beer with the given name already exists
         return beerRepository.findByName(name) == null;
     }
 }

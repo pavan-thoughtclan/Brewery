@@ -38,8 +38,8 @@ public class UserService {
     public User getUserById(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
-            user.setAddressList(null); // Exclude the addressList
-            user.setCartList(null);
+            user.setAddressList(null); //sets addresslist to null
+            user.setCartList(null);//sets cartlist to null
         }
         return user;
     }

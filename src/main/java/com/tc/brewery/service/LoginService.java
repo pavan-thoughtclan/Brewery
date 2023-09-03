@@ -42,10 +42,10 @@ public class LoginService implements UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final String TWILIO_ACCOUNT_SID = "ACb5162fb992d7246e2904ae9889f6689c";
-    private final String TWILIO_AUTH_TOKEN = "a20c5ea7ca51c302ec2626913d59bb16";
+    private final String TWILIO_AUTH_TOKEN = "723389d02270506284b16f1112ff9e54";
 
     public User findByUsername(String username) {
-        return loginRepository.findByEmail(username); // Assuming email is used as the username
+        return loginRepository.findByEmail(username);
     }
 
     public User findByPhoneNumber(String phoneNumber) {
@@ -59,7 +59,7 @@ public class LoginService implements UserDetailsService {
                 user.getEmail(),
                 user.getPhoneNumber(),
                 passwordEncoder.encode(user.getPassword()),
-                UserRole.ROLE_USER // Set the default role here
+                UserRole.ROLE_USER
         );
         return loginRepository.save(userToSave);
     }
@@ -75,40 +75,19 @@ public class LoginService implements UserDetailsService {
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
 
-//        if (username.matches("^\\+91\\d+$")) {
-//            // If the username is a valid phone number (contains only digits)
-////            String phoneNumberWithPrefix = "+91" + username;
-//            user = loginRepository.findByPhoneNumber(phoneNumberWithPrefix);
-//            System.out.println("hello " +user);
-//            actualUsername = user.getPhoneNumber();
-//            System.out.println("actualUsername"+actualUsername);
-//            actualOtp = user.getOtp(); // Get OTP for OTP-based authentication
-//        } else if (username.contains("@")) {
-//            user = loginRepository.findByEmail(username);
-//            actualUsername = user != null ? user.getEmail() : "";
-//        } else {
-//            httpStatus = HttpStatus.BAD_REQUEST;
-//            message = "Invalid username format";
-//        }
-
         if (username.contains("@")) {
             user = loginRepository.findByEmail(username);
             actualUsername = user != null ? user.getEmail() : "";
         }
         else {
-            // If the username is a phone number
             if (!username.startsWith("+91")) {
                 username = "+91" + username;
             }
 
             if (username.matches("^\\+91\\d+$")) {
-                // If the username is a valid phone number (starts with +91 and followed by digits)
                 user = loginRepository.findByPhoneNumber(username);
                 actualUsername = user.getPhoneNumber();
-//                System.out.println("actualUsername" + actualUsername);
                 actualOtp = user.getOtp();
-
-                // Rest of your authentication logic...
             } else {
                 httpStatus = HttpStatus.BAD_REQUEST;
                 message = "Invalid username format";
@@ -120,25 +99,18 @@ public class LoginService implements UserDetailsService {
             message = "User not found with username: " + actualUsername;
         }
 
-//        if (httpStatus != HttpStatus.OK) {
-//            // Return the response with the desired HTTP status and message
-//            String responseBody = "{\"message\":\"" + message + "\"}";
-//            return (UserDetails) new ResponseEntity<>(responseBody, httpStatus);
-//        }
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
 
 
         if (actualOtp != null) {
-            // If actualOtp is not null, return User with actualOtp
             return new org.springframework.security.core.userdetails.User(
                     actualUsername,
                     actualOtp,
                     authorities
             );
         } else {
-            // If actualOtp is null, return User with user.getPassword()
             return new org.springframework.security.core.userdetails.User(
                     actualUsername,
                     user.getPassword(),
@@ -155,7 +127,6 @@ public class LoginService implements UserDetailsService {
         HttpStatus httpStatus = HttpStatus.OK;
         String formattedPhoneNumber=null;
         if (username.matches("^\\d+$")) {
-            // If the username is a valid phone number (contains only digits)
             formattedPhoneNumber=("+91" + username);
             user1 = loginRepository.findByPhoneNumber(formattedPhoneNumber);
         } else if (username.contains("@")) {
@@ -170,31 +141,21 @@ public class LoginService implements UserDetailsService {
         }
 
         if (httpStatus != HttpStatus.OK) {
-            // Return the response with the desired HTTP status and message
             return false;
         }
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user1.getRole().toString()));
 
-        // Generate OTP (6-digit code)
         String lgotp = generateOtp();
         logger.info("Generated OTP: " + lgotp);
 
-        // Create a UserRegistrationDto instance and set phoneNumber
 //        User user1 = new User();
 //        user1.setPhoneNumber(phoneNumber);
 
-        // Send OTP using Twilio
         sendOtpViaTwilio(formattedPhoneNumber, lgotp);
 
-        // Set the entered phone number in the session
         session.setAttribute("lenteredphoneno", formattedPhoneNumber);
         session.setAttribute("lgotp", lgotp);
-//        user1.setOtp(lgotp); // Set the OTP value in the User entity
-//        userRepository.save(user1); // Save the updated User entity
-        // Mark the phone number as valid and OTP sent
-        // You might want to use a more sophisticated approach to track this state
-        // For example, you could store it in the session or database
         return true;
     }
 
@@ -213,7 +174,6 @@ public class LoginService implements UserDetailsService {
         HttpStatus httpStatus = HttpStatus.OK;
         String formattedPhoneNumber=null;
         if (username.matches("^\\d+$")) {
-            // If the username is a valid phone number (contains only digits)
             formattedPhoneNumber=("+91" + username);
             user1 = loginRepository.findByPhoneNumber(formattedPhoneNumber);
         } else if (username.contains("@")) {
@@ -228,28 +188,17 @@ public class LoginService implements UserDetailsService {
         }
 
         if (httpStatus != HttpStatus.OK) {
-            // Return the response with the desired HTTP status and message
             return false;
         }
 
-        // Generate OTP (6-digit code)
         String gotp = generateOtp();
         logger.info("Generated OTP: " + gotp);
 
-        // Create a UserRegistrationDto instance and set phoneNumber
-//        User user1 = new User();
-//        user1.setPhoneNumber(phoneNumber);
-
-        // Send OTP using Twilio
         sendOtpViaTwilio(formattedPhoneNumber, gotp);
 
-        // Set the entered phone number in the session
         session.setAttribute("enteredphoneno", formattedPhoneNumber);
         session.setAttribute("gotp", gotp);
 
-        // Mark the phone number as valid and OTP sent
-        // You might want to use a more sophisticated approach to track this state
-        // For example, you could store it in the session or database
         return true;
     }
 
@@ -265,7 +214,7 @@ public class LoginService implements UserDetailsService {
 
 
     @Transactional
-    public boolean setNewPassword(String newPassword, String confirmNewPassword, HttpServletRequest request) // Add this parameter)
+    public boolean setNewPassword(String newPassword, String confirmNewPassword, HttpServletRequest request)
     {
         String enteredphoneno = (String) request.getSession().getAttribute("enteredphoneno");
         User user1= findByPhoneNumber(enteredphoneno);
@@ -279,7 +228,6 @@ public class LoginService implements UserDetailsService {
         if (!newPassword.equals(confirmNewPassword)) {
             return false;
         }
-        // Encode the password
         String encodedPassword = passwordEncoder.encode(newPassword);
         user1.setPassword(encodedPassword);
 
@@ -292,7 +240,6 @@ public class LoginService implements UserDetailsService {
         }
     }
     private String generateOtp() {
-        // Generate a 6-digit OTP code
         int otpValue = (int) (Math.random() * 900000) + 100000;
         return String.valueOf(otpValue);
     }
@@ -302,7 +249,7 @@ public class LoginService implements UserDetailsService {
 
         Message message = Message.creator(
                         new PhoneNumber(phoneNumber),
-                        new PhoneNumber("+15736484549"),  // Replace with your Twilio phone number
+                        new PhoneNumber("+15736484549"),
                         "Your OTP is: " + otp)
                 .create();
         logger.info("OTP sent: " + message.getSid());

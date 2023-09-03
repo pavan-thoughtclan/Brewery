@@ -31,8 +31,8 @@ public class Food {
     @JsonManagedReference
     @JsonIgnore
     private List<Rating> ratings = new ArrayList<>();
-    @Column(precision = 3, scale = 1) // Adjust precision and scale as needed
-    private BigDecimal averageRating; // Store average rating as a BigDecimal
+    @Column(precision = 3, scale = 1)
+    private BigDecimal averageRating;
 
     public BigDecimal getAverageRating() {
         return averageRating;
@@ -112,7 +112,7 @@ public class Food {
         this.calories = calories;
     }
 
-    @JsonGetter("ratings") // Custom serialization for ratings
+    @JsonGetter("ratings")
     public List<Map<String, Object>> getRatingsInfo() {
 
         List<Map<String, Object>> ratingsInfo = new ArrayList<>();
@@ -121,7 +121,7 @@ public class Food {
             info.put("id", rating.getId());
             info.put("rating", rating.getRating());
             info.put("review", rating.getReview());
-            info.put("user", getUserInfo(rating.getUser())); // Extract user info
+            info.put("user", getUserInfo(rating.getUser()));
             ratingsInfo.add(info);
         }
         return ratingsInfo;
@@ -130,8 +130,8 @@ public class Food {
     private Map<String, Object> getUserInfo(User user) {
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("id", user.getId());
-        userInfo.put("firstName", user.getFirstName()); // Include first name
-        userInfo.put("lastName", user.getLastName());   // Include last name
+        userInfo.put("firstName", user.getFirstName());
+        userInfo.put("lastName", user.getLastName());
         return userInfo;
     }
 
@@ -142,21 +142,6 @@ public class Food {
     public void setRatings(List<Rating> ratings) {
         this.ratings = ratings;
     }
-
-//    @Override
-//    public String toString() {
-//        return "Food{" +
-//                "id=" + id +
-//                ", food_name='" + food_name + '\'' +
-//                ", category='" + category + '\'' +
-//                ", image_url='" + image_url + '\'' +
-//                ", food_price=" + food_price +
-//                ", description='" + description + '\'' +
-//                ", calories='" + calories + '\'' +
-////                ", cartItems=" + cartItems +
-//                '}';
-//    }
-
 
     @Override
     public String toString() {
