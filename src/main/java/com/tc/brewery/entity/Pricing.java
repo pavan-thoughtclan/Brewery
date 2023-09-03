@@ -17,12 +17,10 @@ public class Pricing {
 //    private Long beer_id;
     private int size_ml;
     private BigDecimal price;
-
     private String image_url;
 
     public Pricing() {
     }
-
 
     public Pricing(int id, Beer beer, int size_ml, BigDecimal price, String image_url) {
         this.id = id;
