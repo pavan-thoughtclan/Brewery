@@ -42,7 +42,7 @@ public class LoginService implements UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final String TWILIO_ACCOUNT_SID = "ACb5162fb992d7246e2904ae9889f6689c";
-    private final String TWILIO_AUTH_TOKEN = "a20c5ea7ca51c302ec2626913d59bb16";
+    private final String TWILIO_AUTH_TOKEN = "723389d02270506284b16f1112ff9e54";
 
     public User findByUsername(String username) {
         return loginRepository.findByEmail(username); // Assuming email is used as the username

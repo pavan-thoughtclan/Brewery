@@ -12,6 +12,8 @@ public class Vendor {
     private Long id;
     private String name;
     private String address;
+
+    private String emailId;
     @Column(precision = 9, scale = 7) // Adjust precision and scale as needed
     private BigDecimal lat;
     @Column(precision = 9, scale = 7) // Adjust precision and scale as needed
@@ -24,10 +26,11 @@ public class Vendor {
     public Vendor() {
     }
 
-    public Vendor(Long id, String name, String address, BigDecimal lat, BigDecimal lng, String contactNumber, String companyDescription) {
+    public Vendor(Long id, String name, String address, String emailId, BigDecimal lat, BigDecimal lng, String contactNumber, String companyDescription) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.emailId = emailId;
         this.lat = lat;
         this.lng = lng;
         this.contactNumber = contactNumber;
@@ -56,6 +59,14 @@ public class Vendor {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 
     public BigDecimal getLat() {
