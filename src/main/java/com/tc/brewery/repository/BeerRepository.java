@@ -10,15 +10,12 @@ import java.util.List;
 
 @Repository
 public interface BeerRepository extends JpaRepository<Beer, Integer> {
-    // Add any custom queries if needed
 
     List<Beer> findByCategory(String category);
 
     Beer findByIdAndCategory(int id, String category);
 
-    // Add any custom queries if needed
     List<Beer> findByAverageRatingGreaterThanEqual(BigDecimal rating);
-//    List<Beer> findByAverageRatingGreaterThanEqual(BigDecimal averageRating);
 
     List<Beer> findByAverageRatingBetween(BigDecimal lowerLimit, BigDecimal upperLimit);
 

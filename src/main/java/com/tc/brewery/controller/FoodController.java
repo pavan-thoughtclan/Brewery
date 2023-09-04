@@ -39,9 +39,9 @@ public class FoodController {
         Food food = foodService.getFoodByCategoryAndId(foodId, category);
 
         if (food == null) {
-            return ResponseEntity.notFound().build(); // Return 404 Not Found
+            return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(food); // Return the beer if found
+            return ResponseEntity.ok(food);
         }
     }
 
@@ -50,7 +50,7 @@ public class FoodController {
         Food food = foodService.getFoodById(foodId);
 
         if (food == null) {
-            return ResponseEntity.notFound().build(); // Return 404 status code
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(food);
     }

@@ -13,8 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
-////    UserWithAddressDTO findUserWithAddressByUser_Id(@Param("userId") Long userId);
-//    List<Address> findByUser(User user);
 
     List<Address> findByUserId(Long userId);
     @Query("SELECT a FROM Address a WHERE a.id = ?1")

@@ -34,30 +34,6 @@ public class RatingService {
 
     private static final BigDecimal MIN_RATING = new BigDecimal("4.5");
 
-//    public ResponseEntity<Void> addRating(int beerId, long userId, BigDecimal ratingValue, String review) {
-//        Beer beer = beerRepository.findById(beerId).orElse(null);
-//        User user = userRepository.findById(userId).orElse(null);
-//
-//        if (beer == null) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        }
-//
-//        if (user == null) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        }
-//
-//        Rating rating = new Rating();
-//        rating.setBeer(beer);
-//        rating.setUser(user);
-//        rating.setRating(ratingValue);
-//        rating.setReview(review);
-//
-//        ratingRepository.save(rating);
-//
-//        return ResponseEntity.ok().build();
-//    }
-
-
     public ResponseEntity<Void> addBeerRating(int beerId, long userId, BigDecimal ratingValue, String review) {
         Beer beer = beerRepository.findById(beerId).orElse(null);
         User user = userRepository.findById(userId).orElse(null);
@@ -78,7 +54,6 @@ public class RatingService {
 
         ratingRepository.save(rating);
 
-        // Recalculate and update averageRating for all beers
         updateAverageRatingsForAllBeers();
 
         return ResponseEntity.ok().build();
@@ -99,7 +74,8 @@ public class RatingService {
                 totalRating = totalRating.add(rating.getRating());
             }
             beer.setAverageRating(totalRating.divide(BigDecimal.valueOf(beer.getRatings().size()), 2, RoundingMode.HALF_UP));
-        } else {
+        }
+        else {
             beer.setAverageRating(null);
         }
     }
@@ -125,7 +101,6 @@ public class RatingService {
 
         ratingRepository.save(rating);
 
-        // Recalculate and update averageRating for all beers
         updateAverageRatingsForAllFoods();
 
         return ResponseEntity.ok().build();

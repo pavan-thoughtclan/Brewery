@@ -13,14 +13,12 @@ public class CartItem {
     private Long id;
     @ManyToOne
     @JsonIgnoreProperties("cartItems")
-    @JoinColumn(name = "cart_id",referencedColumnName = "id") // Foreign key referencing Cart
+    @JoinColumn(name = "cart_id",referencedColumnName = "id")
     private Cart cart;
 
     @ManyToOne
-//    @JsonIgnoreProperties("cartItems")
-//    @JsonIgnore
     @JsonInclude(Include.NON_NULL)
-    @JoinColumn(name = "beer_id",referencedColumnName = "id") // The foreign key column in CartItem table
+    @JoinColumn(name = "beer_id",referencedColumnName = "id")
     private Beer beer;
     @JsonInclude(Include.NON_NULL)
     private Integer beerQuantity;
@@ -32,7 +30,6 @@ public class CartItem {
     private Double amountOfEachBeer;
 
     @ManyToOne
-//    @JsonIgnore
     @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "food_id", referencedColumnName = "id")
     private Food food;
@@ -132,7 +129,6 @@ public class CartItem {
             this.name = name;
         }
 
-        // Getters for id and name
     }
     @Override
     public String toString() {
