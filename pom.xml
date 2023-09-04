@@ -144,7 +144,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>Brewey</finalName>
+		<finalName>Brewery.1</finalName>
 	</build>
 
 </project>
