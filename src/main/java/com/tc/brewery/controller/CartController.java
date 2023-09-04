@@ -38,12 +38,12 @@ public class CartController {
     }
 
     @GetMapping("/get_current_cart/{userId}")
-    public ResponseEntity<Cart> getCurrentCartByUserId(@PathVariable Long userId) {
-        Cart latestCart = cartService.getLatestCartByUserId(userId);
-        if (latestCart == null) {
+    public ResponseEntity<List<Cart>> getNotDeliveredCartsByUserId(@PathVariable Long userId) {
+        List<Cart> notDeliveredCarts = cartService.getNotDeliveredCartsByUserId(userId);
+        if (notDeliveredCarts.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(latestCart);
+        return ResponseEntity.ok(notDeliveredCarts);
     }
 
     @PatchMapping("/update_cart_status/{cartId}")

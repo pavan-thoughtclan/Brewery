@@ -125,9 +125,10 @@ public class CartService {
 
         return cartId;
     }
-    public Cart getLatestCartByUserId(Long userId) {
-        return cartRepository.findTopByUserIdOrderByTimestampDesc(userId);
+    public List<Cart> getNotDeliveredCartsByUserId(Long userId) {
+        return cartRepository.findAllByUserIdAndStatus(userId, "NOT DELIVERED");
     }
+
     public boolean updateCartStatus(Long cartId, String newStatus) {
         Optional<Cart> cartOptional = cartRepository.findById(cartId);
         if (cartOptional.isPresent()) {

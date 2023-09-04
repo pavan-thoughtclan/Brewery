@@ -11,9 +11,10 @@ import java.util.List;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
-    @Query("SELECT c FROM Cart c JOIN FETCH c.cartItems WHERE c.user.id = :userId")
-    List<Cart> findCartsByUserId(@Param("userId") Long userId);
-    Cart findTopByUserIdOrderByTimestampDesc(Long userId);
+//    @Query("SELECT c FROM Cart c JOIN FETCH c.cartItems WHERE c.user.id = :userId")
+//    List<Cart> findCartsByUserId(@Param("userId") Long userId);
+//    Cart findTopByUserIdOrderByTimestampDesc(Long userId);
     List<Cart> findCartsByUserIdOrderByTimestampDesc(Long userId);
+    List<Cart> findAllByUserIdAndStatus(Long userId, String status);
 
 }
