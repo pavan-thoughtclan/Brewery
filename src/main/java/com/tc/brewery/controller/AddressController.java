@@ -5,6 +5,7 @@ import com.tc.brewery.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ public class AddressController {
     private AddressService addressService;
 
     @PostMapping("/add_address/{userId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> createAddressForUser(
             @PathVariable Long userId,
             @RequestBody Address address
@@ -24,11 +26,13 @@ public class AddressController {
     }
 
     @GetMapping("/address/{user_id}")
+    @PreAuthorize("hasRole('USER')")
     public List<Address> getAddressesByUserId(@PathVariable("user_id") Long userId) {
         return addressService.getAddressesByUserId(userId);
     }
 
     @DeleteMapping("/delete_addresse/{addressId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> deleteAddress(@PathVariable Long addressId) {
         if (addressService.deleteAddressById(addressId)) {
             return new ResponseEntity<>(HttpStatus.OK);

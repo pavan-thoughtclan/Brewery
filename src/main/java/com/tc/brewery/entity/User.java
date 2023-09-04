@@ -28,14 +28,14 @@ public class User {
     private String phoneNumber;
 
     private String password;
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String otp;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
-//    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL)
 
     @OneToMany(mappedBy = "user",cascade=CascadeType.PERSIST)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties("user")
     private List<Address> addressList=new ArrayList<>();
 

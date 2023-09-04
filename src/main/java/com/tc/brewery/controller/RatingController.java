@@ -4,6 +4,7 @@ import com.tc.brewery.entity.Beer;
 import com.tc.brewery.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -17,6 +18,7 @@ public class RatingController {
     private RatingService ratingService;
 
     @PostMapping("/beerratings/{beerId}/{userId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> addBeerRating(
             @PathVariable int beerId,
             @PathVariable int userId,
@@ -31,6 +33,7 @@ public class RatingController {
     }
 
     @PostMapping("/foodratings/{foodId}/{userId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> addFoodRating(
             @PathVariable int foodId,
             @PathVariable int userId,
@@ -45,11 +48,13 @@ public class RatingController {
     }
 
     @GetMapping("/beers/Highrated")
+    @PreAuthorize("hasRole('USER')")
     public List<Beer> getHighRatedBeers() {
         return ratingService.getBeersWithHighRatings();
     }
 
     @GetMapping("/beers/Moderaterated")
+    @PreAuthorize("hasRole('USER')")
     public List<Beer> getBeersWithinManualRatingsRange() {
         return ratingService.getBeersWithinManualRatingsRange();
     }
