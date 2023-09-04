@@ -125,8 +125,8 @@ public class CartService {
 
         return cartId;
     }
-    public List<Cart> getNotDeliveredCartsByUserId(Long userId) {
-        return cartRepository.findAllByUserIdAndStatus(userId, "NOT DELIVERED");
+    public Cart getLatestCartByUserId(Long userId) {
+        return cartRepository.findTopByUserIdOrderByTimestampDesc(userId);
     }
 
     public boolean updateCartStatus(Long cartId, String newStatus) {

@@ -41,15 +41,13 @@ public class CartController {
     }
 
     @GetMapping("/get_current_cart/{userId}")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<Cart>> getNotDeliveredCartsByUserId(@PathVariable Long userId) {
-        List<Cart> notDeliveredCarts = cartService.getNotDeliveredCartsByUserId(userId);
-        if (notDeliveredCarts.isEmpty()) {
+    public ResponseEntity<Cart> getCurrentCartByUserId(@PathVariable Long userId) {
+        Cart latestCart = cartService.getLatestCartByUserId(userId);
+        if (latestCart == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(notDeliveredCarts);
+        return ResponseEntity.ok(latestCart);
     }
-
     @PatchMapping("/update_cart_status/{cartId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> updateCartStatus(@PathVariable Long cartId, @RequestBody Map<String, Object> statusMap) {
