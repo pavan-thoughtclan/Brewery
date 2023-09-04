@@ -59,15 +59,15 @@ public class NoAuthController {
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
         String username = request.getUsername();
         String password = request.getPassword();
-        System.out.println(username);
-        System.out.println(password);
+//        System.out.println(username);
+//        System.out.println(password);
 
         if (username.contains("@")) {
             return doAuthenticateByEmail(username, password);
         } else if (username.matches("^\\d+$")) {
             return doAuthenticateByPhoneNumber(username, password);
         } else {
-            System.out.println("Invalid input format");
+//            System.out.println("Invalid input format");
         }
         return null;
     }
