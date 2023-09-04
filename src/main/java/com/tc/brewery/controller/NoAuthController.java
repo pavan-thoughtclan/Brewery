@@ -211,8 +211,12 @@ public class NoAuthController {
 
     @PostMapping("/registration")
     public ResponseEntity<String> registerUserAccount(@RequestBody User user) {
+        if (loginService.existsUserByEmail(user.getEmail()) || loginService.existsUserByPhoneNumber(user.getPhoneNumber())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"User with the same email or mobile number already exists\"}");
+        }
         loginService.saveuser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body("{\"message\": \"User registered successfully\"}");
     }
+
 }
 

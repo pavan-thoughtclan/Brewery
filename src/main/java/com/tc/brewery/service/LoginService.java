@@ -43,6 +43,13 @@ public class LoginService implements UserDetailsService {
 
     private final String TWILIO_ACCOUNT_SID = "ACb5162fb992d7246e2904ae9889f6689c";
     private final String TWILIO_AUTH_TOKEN = "723389d02270506284b16f1112ff9e54";
+    public boolean existsUserByEmail(String email) {
+        return loginRepository.existsByEmail(email);
+    }
+
+    public boolean existsUserByPhoneNumber(String phoneNumber) {
+        return loginRepository.existsByPhoneNumber(phoneNumber);
+    }
 
     public User findByUsername(String username) {
         return loginRepository.findByEmail(username);
@@ -51,8 +58,17 @@ public class LoginService implements UserDetailsService {
     public User findByPhoneNumber(String phoneNumber) {
         return loginRepository.findByPhoneNumber(phoneNumber);
     }
+    public class UserAlreadyExistsException extends RuntimeException {
+
+        public UserAlreadyExistsException(String message) {
+            super(message);
+        }
+    }
 
     public User saveuser(User user) {
+        if (existsUserByEmail(user.getEmail()) || existsUserByPhoneNumber(user.getPhoneNumber())) {
+            throw new UserAlreadyExistsException("User with the same email or mobile number already exists");
+        }
         User userToSave = new User(
                 user.getFirstName(),
                 user.getLastName(),
@@ -63,7 +79,6 @@ public class LoginService implements UserDetailsService {
         );
         return loginRepository.save(userToSave);
     }
-
 
     @Override
     @Transactional
