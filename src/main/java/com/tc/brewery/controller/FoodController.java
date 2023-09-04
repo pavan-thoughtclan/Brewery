@@ -7,6 +7,7 @@ import com.tc.brewery.service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,22 +19,26 @@ public class FoodController {
     private FoodService foodService;
 
     @GetMapping("/foodcategories")
+    @PreAuthorize("hasRole('USER')")
     public Set<String> getAllCategories() {
         return foodService.getAllCategories();
     }
 
     @GetMapping("/foods")
+    @PreAuthorize("hasRole('USER')")
     public List<Food> getAllFoods() {
         return foodService.getAllFoods();
     }
 
     @GetMapping("/foodcategories/{category}")
+    @PreAuthorize("hasRole('USER')")
     public List<Food> getFoodsByFood_category(@PathVariable String category) {
         category=category.replace("_"," ");
         return foodService.getFoodsByCategory(category);
     }
 
     @GetMapping("/foodcategories/{category}/{foodId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getFoodByCategoryAndId(@PathVariable String category, @PathVariable int foodId) {
         category=category.replace("_"," ");
         Food food = foodService.getFoodByCategoryAndId(foodId, category);
@@ -46,6 +51,7 @@ public class FoodController {
     }
 
     @GetMapping("/foods/{foodId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Food> getFoodById(@PathVariable int foodId) {
         Food food = foodService.getFoodById(foodId);
 
@@ -55,6 +61,7 @@ public class FoodController {
         return ResponseEntity.ok(food);
     }
     @PostMapping("/create_food")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> addFood(@RequestBody Food food) {
         try {
             Food savedFood = foodService.saveFood(food);
